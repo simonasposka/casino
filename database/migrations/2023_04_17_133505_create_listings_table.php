@@ -12,7 +12,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('listings', function (Blueprint $table) {
             $table->id();
@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('outcome_label_one');
             $table->string('outcome_label_two');
             $table->string('status')->default(ListingStatus::PENDING->value);
-            $table->timestamps();
         });
     }
 
@@ -30,7 +29,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('listings');
     }

@@ -13,12 +13,12 @@ class AuthController extends Controller
 {
     public function register(): Factory|View|Application
     {
-        return view('auth.register');
+        return view('Register');
     }
 
     public function login(): Factory|View|Application
     {
-        return view('auth.login');
+        return view('Login');
     }
 
     public function store(StoreRequest $request): User

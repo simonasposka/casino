@@ -2,11 +2,14 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\ListingsController;
+use App\Http\Middleware\AdminOnly;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Support\Facades\Route;
 
@@ -41,4 +44,25 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], static function(
     Route::get('/listings/create', [ListingsController::class, 'create'])->name('listings.create');
     Route::post('/listings', [ListingsController::class, 'store']);
     Route::get('/listings/{listing}', [ListingsController::class, 'show']);
+
+    Route::get('items', [ItemsController::class, 'index'])->name('items.index');
+    Route::get('items/create', [ItemsController::class, 'create']);
+    Route::post('items', [ItemsController::class, 'store']);
+    Route::get('items/{item}', [ItemsController::class, 'show'])->name('items.show');
+    Route::put('items/{item}', [ItemsController::class, 'update']);
+    Route::get('items/{item}/edit', [ItemsController::class, 'edit']);
+    Route::get('items/{item}/delete', [ItemsController::class, 'delete']);
+    Route::delete('items/{item}', [ItemsController::class, 'destroy']);
+
+
+    Route::group(['middleware' => [AdminOnly::class]], static function () {
+        Route::get('categories', [CategoriesController::class, 'index'])->name('categories.index');
+        Route::get('categories/create', [CategoriesController::class, 'create']);
+        Route::post('categories', [CategoriesController::class, 'store']);
+        Route::get('categories/{category}/edit', [CategoriesController::class, 'edit']);
+        Route::put('categories/{category}', [CategoriesController::class, 'update']);
+        Route::get('categories/{category}/delete', [CategoriesController::class, 'delete']);
+        Route::delete('categories/{category}', [CategoriesController::class, 'destroy']);
+
+    });
 });

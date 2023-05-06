@@ -10,6 +10,6 @@ class DashboardController extends Controller
 {
     public function index(): Factory|View|Application
     {
-        return view('dashboard.index');
+        return view('DashboardIndex');
     }
 }

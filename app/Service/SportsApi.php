@@ -76,11 +76,11 @@ class SportsApi
     /**
      * @throws Exception
      */
-    public function getEvents(): array
+    public function getEvents(int $amount = 10): array
     {
         $events = [];
 
-        for ($i = 1; $i < 11; $i++) {
+        for ($i = 1; $i <= $amount; $i++) {
             $event = $this->getMockEvent($i);
             $events[] = $event;
         }

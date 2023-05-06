@@ -17,7 +17,7 @@ class ListingsController extends Controller
         $listings = Listing::all();
         $events = Event::all();
 
-        return view('listings.index', [
+        return view('ListingsIndex', [
             'listings' => $listings,
             'events' => $events,
         ]);
@@ -25,14 +25,14 @@ class ListingsController extends Controller
 
     public function show(Listing $listing): Factory|View|Application
     {
-        return view('listings.show', [
+        return view('ListingsShow', [
             'listing' => $listing,
         ]);
     }
 
     public function create(): Factory|View|Application
     {
-        return view('listings.create', [
+        return view('ListingsCreate', [
             'events' => Event::all(),
         ]);
     }
@@ -52,7 +52,6 @@ class ListingsController extends Controller
         );
 
         // TODO: prognozuoti varzybu baigti
-
         return redirect()->route('listings.index')->with('message', 'Listing successfully created');
     }
 }

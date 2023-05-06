@@ -26,7 +26,7 @@
                     </select>
 
 
-                @if($errors->any())
+                    @if($errors->any())
                         {!! implode('', $errors->all('<p class="mt-4 text-red-500">:message</p>')) !!}
                     @endIf
 
