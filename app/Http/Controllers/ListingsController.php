@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Event;
 use App\Models\Listing;
 use Illuminate\Contracts\Foundation\Application;
@@ -56,6 +57,7 @@ class ListingsController extends Controller
     {
         return view('ListingsCreate', [
             'events' => Event::all(),
+            'categories' => Category::all()
         ]);
     }
 
@@ -64,13 +66,15 @@ class ListingsController extends Controller
         $validated = $request->validate([
             'first_label' => ['required', 'string', 'min:1', 'max:255'],
             'second_label' => ['required', 'string', 'min:1', 'max:255'],
-            'event_id' => ['required', 'int', 'min:1']
+            'event_id' => ['required', 'int', 'min:1'],
+            'category_id' => ['sometimes', 'nullable', 'int', 'min:1'],
         ]);
 
         Listing::createNewListing(
             $validated['first_label'],
             $validated['second_label'],
             $validated['event_id'],
+            $validated['category_id'],
         );
 
         // TODO: prognozuoti varzybu baigti

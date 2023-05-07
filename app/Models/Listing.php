@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $outcome_label_one
  * @property string outcome_label_two
  * @property ListingStatus $status
+ * @property int|null $category_id
  * @method Builder where(string $field, string $condition, string $value)
  * @method static find(int $listingId)
  */
@@ -24,19 +25,30 @@ class Listing extends Model
 
     public $timestamps = false;
 
-    public static function createNewListing(string $first_label, string $second_label, int $event_id)
-    {
+    public static function createNewListing(
+        string $first_label,
+        string $second_label,
+        int $event_id,
+        ?int $categoryId = null,
+    ): Listing {
         $listing = new Listing();
 
         $listing->event_id = $event_id;
+        $listing->category_id = $categoryId;
         $listing->outcome_label_one = $first_label;
         $listing->outcome_label_two = $second_label;
         $listing->save();
+        return $listing;
     }
 
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 
     public function bets(): HasMany

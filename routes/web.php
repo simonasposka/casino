@@ -32,20 +32,18 @@ Route::get('/', [HomeController::class, 'index']);
 // Auth
 Route::group(['middleware' => [RedirectIfAuthenticated::class]], static function() {
     Route::get('/register', [AuthController::class, 'register'])->name('register.index');
-    Route::get('/login', [AuthController::class, 'login'])->name('login.index');
+    Route::get('/login', [LoginController::class, 'index'])->name('login.index');
     Route::post('/register', [RegisterController::class, 'store']);
     Route::post('/login', [LoginController::class, 'store'])->name('login');
 });
 
-
 // Logged in
 Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], static function() {
+    Route::delete('/logout', [AuthController::class, 'logout']);
+
     // Listings
     Route::get('', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/listings', [ListingsController::class, 'index'])->name('listings.index');
-    Route::get('/listings/create', [ListingsController::class, 'create'])->name('listings.create');
-    Route::post('/listings', [ListingsController::class, 'store']);
-    Route::get('/listings/{listing}', [ListingsController::class, 'show'])->name('listings.show');
 
     // Bets
     Route::post('/listings/{listing}/bets', [BetsController::class, 'store']);
@@ -65,6 +63,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], static function(
     Route::group(['middleware' => [AdminOnly::class]], static function () {
         Route::get('/events', [EventsController::class, 'index'])->name('events.index');
 
+        Route::get('/listings/create', [ListingsController::class, 'create'])->name('listings.create');
+        Route::post('/listings', [ListingsController::class, 'store']);
+
         // Categories
         Route::get('categories', [CategoriesController::class, 'index'])->name('categories.index');
         Route::get('categories/create', [CategoriesController::class, 'create']);
@@ -74,4 +75,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], static function(
         Route::get('categories/{category}/delete', [CategoriesController::class, 'delete']);
         Route::delete('categories/{category}', [CategoriesController::class, 'destroy']);
     });
+
+    Route::get('/listings/{listing}', [ListingsController::class, 'show'])->name('listings.show');
 });

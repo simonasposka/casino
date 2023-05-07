@@ -81,7 +81,11 @@ class ItemsController extends Controller
 
     public function destroy(Item $item): RedirectResponse
     {
-        $item->delete();
-        return redirect()->route('items.index')->with('message', 'Item deleted');
+        if ($item->bet_id != null) {
+            return redirect()->back()->with('error', 'Item cannot be deleted because it is in bet');
+        } else {
+            $item->delete();
+            return redirect()->route('items.index')->with('message', 'Item deleted');
+        }
     }
 }

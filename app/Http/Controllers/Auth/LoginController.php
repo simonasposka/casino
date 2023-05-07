@@ -7,9 +7,15 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class LoginController extends Controller
 {
+    public function index(): View
+    {
+        return view('Login');
+    }
+
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([

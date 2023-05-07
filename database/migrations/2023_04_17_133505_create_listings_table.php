@@ -17,6 +17,7 @@ return new class extends Migration
         Schema::create('listings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
+            $table->foreignId('category_id')->nullable()->default(null)->constrained('categories')->onDelete('set null');
             $table->boolean('outcome')->nullable()->default(null);
             $table->string('outcome_label_one');
             $table->string('outcome_label_two');

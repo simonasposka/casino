@@ -5,9 +5,11 @@
     <div class="bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
         <div class="text-center">
             <h2 class="text-4xl leading-10 tracking-tight font-bold text-gray-900">Listings</h2>
-            <a href="/dashboard/listings/create">
-                <button type="submit" class="mt-4 py-2 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-indigo-500 hover:bg-indigo-400 focus:outline-none">Create New</button>
-            </a>
+            @if(Auth::user()->is_admin == 1)
+                <a href="/dashboard/listings/create">
+                    <button type="submit" class="mt-4 py-2 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-indigo-500 hover:bg-indigo-400 focus:outline-none">Create New</button>
+                </a>
+            @endif
         </div>
     </div>
 
@@ -16,6 +18,7 @@
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
                 <th scope="col" class="px-6 py-3">Id</th>
+                <th scope="col" class="px-6 py-3">Category</th>
                 <th scope="col" class="px-6 py-3">Outcome</th>
                 <th scope="col" class="px-6 py-3">Outcome 1</th>
                 <th scope="col" class="px-6 py-3">Outcome 2</th>
@@ -29,6 +32,15 @@
                     <td class="px-6 py-4">
                         <a href="/dashboard/listings/{{ $listing->id }}">
                             {{ $listing->id }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="/dashboard/listings/{{ $listing->id }}">
+                            @if(is_null($listing->category))
+                                -
+                            @else
+                                {{ $listing->category->name }}
+                            @endif
                         </a>
                     </td>
                     <td class="px-6 py-4">
