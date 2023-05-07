@@ -7,13 +7,16 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
+ * @property int $id
  * @property int $event_id
  * @property string $outcome_label_one
  * @property string outcome_label_two
  * @property ListingStatus $status
  * @method Builder where(string $field, string $condition, string $value)
+ * @method static find(int $listingId)
  */
 class Listing extends Model
 {
@@ -34,5 +37,10 @@ class Listing extends Model
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
+    }
+
+    public function bets(): HasMany
+    {
+        return $this->hasMany(Bet::class);
     }
 }

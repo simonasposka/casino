@@ -20,18 +20,46 @@
                 <th scope="col" class="px-6 py-3">Outcome 1</th>
                 <th scope="col" class="px-6 py-3">Outcome 2</th>
                 <th scope="col" class="px-6 py-3">Status</th>
-                <th scope="col" class="px-6 py-3">Created At</th>
+                <th scope="col" class="px-6 py-3">Date</th>
             </tr>
             </thead>
             <tbody>
             @foreach($listings as $listing)
                 <tr class="bg-white border-b">
-                    <td class="px-6 py-4">{{ $listing->id }}</td>
-                    <td class="px-6 py-4">{{ $listing->outcome }}</td>
-                    <td class="px-6 py-4">{{ $listing->outcome_label_one }}</td>
-                    <td class="px-6 py-4">{{ $listing->outcome_label_two }}</td>
-                    <td class="px-6 py-4">{{ $listing->status }}</td>
-                    <td class="px-6 py-4">{{ $listing->created_at }}</td>
+                    <td class="px-6 py-4">
+                        <a href="/dashboard/listings/{{ $listing->id }}">
+                            {{ $listing->id }}
+                        </a>
+                    </td>
+                    <td class="px-6 py-4">
+                        <a href="/dashboard/listings/{{ $listing->id }}">
+                            @if(is_null($listing->outcome))
+                                -
+                            @else
+                                {{ $listing->outcome }}
+                            @endif
+                        </a>
+                    </td>
+                    <td class="px-6 py-4">
+                        <a href="/dashboard/listings/{{ $listing->id }}">
+                            {{ $listing->outcome_label_one }}
+                        </a>
+                    </td>
+                    <td class="px-6 py-4">
+                        <a href="/dashboard/listings/{{ $listing->id }}">
+                            {{ $listing->outcome_label_two }}
+                        </a>
+                    </td>
+                    <td class="px-6 py-4">
+                        <a href="/dashboard/listings/{{ $listing->id }}">
+                            {{ $listing->status }}
+                        </a>
+                    </td>
+                    <td class="px-6 py-4">
+                        <a href="/dashboard/listings/{{ $listing->id }}">
+                            {{ $listing->event->date_of_event }}
+                        </a>
+                    </td>
                 </tr>
             @endforeach
             </tbody>

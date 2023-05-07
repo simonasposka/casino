@@ -34,6 +34,7 @@ class ItemsController extends Controller
         $itemName = $validated['name'];
         $item = new Item();
         $item->name = $itemName;
+        $item->user_id = auth()->id();
         $item->description = $validated['description'];
         $item->value = $itemPriceService->getItemPrice($itemName);
         $item->save();

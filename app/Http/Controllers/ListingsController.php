@@ -14,20 +14,42 @@ class ListingsController extends Controller
 {
     public function index(): Factory|View|Application
     {
-        $listings = Listing::all();
-        $events = Event::all();
+        $listings = Listing::all()->load('event');
 
         return view('ListingsIndex', [
             'listings' => $listings,
-            'events' => $events,
         ]);
     }
 
     public function show(Listing $listing): Factory|View|Application
     {
-        return view('ListingsShow', [
-            'listing' => $listing,
-        ]);
+        $data = [
+            'listing' => $listing->load([
+                'event',
+                'bets' => function($query) {
+                    return $query->with(['creator', 'items']);
+                }
+            ])->toArray(),
+        ];
+
+        // Calculate total bet values
+        $data = array_map(function($listing) {
+            $bets = array_map(function($bet) {
+                $totalValue = 0;
+
+                foreach ($bet['items'] as $item) {
+                    $totalValue += $item['value'];
+                }
+
+                $bet['total_value'] = $totalValue;
+                return $bet;
+            }, $listing['bets']);
+
+            $listing['bets'] = $bets;
+            return $listing;
+        }, $data);
+
+        return view('ListingsShow', $data);
     }
 
     public function create(): Factory|View|Application

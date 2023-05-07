@@ -53,54 +53,10 @@ class User extends Authenticatable implements JWTSubject
         'pivot',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
-    public function articles(): HasMany
-    {
-        return $this->hasMany(Article::class, 'user_id');
-    }
-
-    public function ownedTeams(): HasMany
-    {
-        return $this->hasMany(Team::class, 'user_id');
-    }
-
-    public function teams(): BelongsToMany
-    {
-        return $this->belongsToMany(Team::class, 'user_team');
-    }
 
     public static function findByEmail(string $email): ?User
     {
         return self::where('email', '=', $email)->first();
-    }
-
-    public static function updateFromDTO(User $user, StoreRequestDTO $dto): void
-    {
-        $requestName = $dto->getName();
-        $requestEmail = $dto->getEmail();
-        $requestPassword = $dto->getPassword();
-
-        if (strlen($requestName) > 0) {
-            $user->name = $requestName;
-        }
-
-        if (strlen($requestEmail) > 0) {
-            $user->email = $requestEmail;
-        }
-
-        if (strlen($requestPassword) > 0) {
-            $user->password = $requestPassword;
-        }
-
-        $user->save();
     }
 
     public function getJWTIdentifier(): mixed
@@ -113,11 +69,6 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function isAdmin(): bool
-    {
-        return $this->is_admin == true;
-    }
-
     public static function createUser(string $email, string $name, string $password, bool $isAdmin = false): User
     {
         $user = new User();
@@ -128,5 +79,10 @@ class User extends Authenticatable implements JWTSubject
         $user->save();
 
         return $user;
+    }
+
+    public function items(): HasMany
+    {
+        return $this->hasMany(Item::class);
     }
 }

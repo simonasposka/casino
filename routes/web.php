@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\BetItemsController;
+use App\Http\Controllers\BetsController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventsController;
@@ -38,13 +40,19 @@ Route::group(['middleware' => [RedirectIfAuthenticated::class]], static function
 
 // Logged in
 Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], static function() {
+    // Listings
     Route::get('', [DashboardController::class, 'index'])->name('dashboard.index');
-    Route::get('/events', [EventsController::class, 'index'])->name('events.index');
     Route::get('/listings', [ListingsController::class, 'index'])->name('listings.index');
     Route::get('/listings/create', [ListingsController::class, 'create'])->name('listings.create');
     Route::post('/listings', [ListingsController::class, 'store']);
-    Route::get('/listings/{listing}', [ListingsController::class, 'show']);
+    Route::get('/listings/{listing}', [ListingsController::class, 'show'])->name('listings.show');
 
+    // Bets
+    Route::post('/listings/{listing}/bets', [BetsController::class, 'store']);
+    Route::get('/listings/{listing}/bets/{bet}/items/add', [BetItemsController::class, 'create']);
+    Route::post('/listings/{listing}/bets/{bet}/items', [BetItemsController::class, 'store']);
+
+    // Items
     Route::get('items', [ItemsController::class, 'index'])->name('items.index');
     Route::get('items/create', [ItemsController::class, 'create']);
     Route::post('items', [ItemsController::class, 'store']);
@@ -54,8 +62,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], static function(
     Route::get('items/{item}/delete', [ItemsController::class, 'delete']);
     Route::delete('items/{item}', [ItemsController::class, 'destroy']);
 
-
     Route::group(['middleware' => [AdminOnly::class]], static function () {
+        Route::get('/events', [EventsController::class, 'index'])->name('events.index');
+
+        // Categories
         Route::get('categories', [CategoriesController::class, 'index'])->name('categories.index');
         Route::get('categories/create', [CategoriesController::class, 'create']);
         Route::post('categories', [CategoriesController::class, 'store']);
@@ -63,6 +73,5 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], static function(
         Route::put('categories/{category}', [CategoriesController::class, 'update']);
         Route::get('categories/{category}/delete', [CategoriesController::class, 'delete']);
         Route::delete('categories/{category}', [CategoriesController::class, 'destroy']);
-
     });
 });
