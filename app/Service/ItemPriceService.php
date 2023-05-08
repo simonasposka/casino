@@ -18,34 +18,34 @@ class ItemPriceService
         $priceMean = $this->findItemPriceLocally($itemName);
 
         $response = Http::get(self::API_URL . str_replace(' ', '+', $itemName));
-        if ($response->status() != ResponseAlias::HTTP_OK) {
+        if ($response->status() == ResponseAlias::HTTP_OK) {
+            $responseMean = $this->findLowerPriceRange($response->body());
+
+            if ($responseMean != 0) {
+                if ($priceMean != 0) {
+                    $estimatedPrice = $this->calculateMean($priceMean + $responseMean, 2);
+                } else {
+                    $estimatedPrice = $this->calculateMean($priceMean + $responseMean, 1);
+                }
+            } else {
+                $estimatedPrice = $priceMean;
+            }
+
+            return $estimatedPrice;
+        } else {
             return $priceMean;
         }
-
-        $responseMean = $this->findLowerPriceRange($response->body());
-
-        if ($responseMean != 0) {
-            if ($priceMean == 0) {
-                $estimatedPrice = $this->calculateMean($priceMean + $responseMean, 1);
-            } else {
-                $estimatedPrice = $this->calculateMean($priceMean + $responseMean, 2);
-            }
-        } else {
-            $estimatedPrice = $priceMean;
-        }
-
-        return $estimatedPrice;
     }
 
     private function findItemPriceLocally(string $itemName): int {
         $items = Item::where('name', '=', $itemName)->get();
-        $priceMean = 0;
         $itemsCount = $items->count();
 
         switch ($itemsCount) {
             case 0:
             case 1:
-                return $priceMean;
+                $priceMean = 0;
+                break;
             case 2:
                 $priceMean = $items->last()->value; // first one will contain my value
                 break;
@@ -69,45 +69,9 @@ class ItemPriceService
 
     private function findLowerPriceRange(string $response): int
     {
-//        $prices = ["nuo 714.00 €",
-//            "nuo 588.00 €",
-//            "nuo 788.00 €",
-//            "nuo 859.00 €",
-//            "nuo 689.00 €",
-//            "nuo 909.00 €",
-//            "nuo 855.00 €",
-//            "nuo 1049.00 €",
-//            "nuo 899.00 €",
-//            "nuo 1148.00 €",
-//            "nuo 979.00 €",
-//            "nuo 899.00 €",
-//            "nuo 1239.00 €",
-//            "nuo 1499.00 €",
-//            "588.00 €",
-//            "714.00 €",
-//            "788.00 €",
-//            "908.00 €",
-//            "958.00 €",
-//            "689.00 €",
-//            "974.00 €",
-//            "859.00 €",
-//            "864.25 €",
-//            "989.00 €",
-//            "1179.00 €",
-//            "1259.00 €",
-//            "1499.00 €",
-//            "728.00 €",
-//            "798.00 €",
-//            "839.00 €",
-//            "899.00 €",
-//            "904.00 €",
-//            "964.00 €",
-//            "1299.00 €"];
-
         // Create a new DOMDocument object
         $doc = new DOMDocument();
-        $internalErrors = libxml_use_internal_errors(true);
-
+        libxml_use_internal_errors(true);
 
         // Load the HTML content from a file or string
         $doc->loadHTML($response);
@@ -125,7 +89,6 @@ class ItemPriceService
 
             $pricesFromResponse[] = $price->textContent;
             $count += 1;
-//            echo $price->textContent . "\n";
         }
 
         $pricesCount = count($pricesFromResponse);
