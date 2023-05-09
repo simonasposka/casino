@@ -19,7 +19,27 @@ class ItemPriceService
 
         $response = Http::get(self::API_URL . str_replace(' ', '+', $itemName));
         if ($response->status() == ResponseAlias::HTTP_OK) {
-            $responseMean = $this->findLowerPriceRange($response->body());
+            $pricesFromResponse = $this->findLowerPriceRange($response->body());
+
+            if (count($pricesFromResponse) > 0) {
+                $responsePriceSum = 0;
+
+                foreach ($pricesFromResponse as $priceFromResponse) {
+                    $parts = explode(' ', $priceFromResponse);
+
+                    if (count($parts) == 3) {
+                        $responsePriceSum += floatval($parts[1]);
+                    }
+
+                    if (count($parts) == 2) {
+                        $responsePriceSum += floatval($parts[0]);
+                    }
+                }
+
+                $responseMean = $this->calculateMean($responsePriceSum * 100, count($pricesFromResponse));
+            } else {
+                $responseMean = 0;
+            }
 
             if ($responseMean != 0) {
                 if ($priceMean != 0) {
@@ -62,12 +82,12 @@ class ItemPriceService
         return $priceMean;
     }
 
-    private function calculateMean(int $sum, int $itemsCount): int
+    private function calculateMean(int $sum, int $count): int
     {
-        return floor($sum / $itemsCount);
+        return floor($sum / $count);
     }
 
-    private function findLowerPriceRange(string $response): int
+    private function findLowerPriceRange(string $response): array
     {
         // Create a new DOMDocument object
         $doc = new DOMDocument();
@@ -91,25 +111,6 @@ class ItemPriceService
             $count += 1;
         }
 
-        $pricesCount = count($pricesFromResponse);
-        if ($pricesCount == 0) {
-            return 0;
-        }
-
-        $responsePriceSum = 0;
-
-        foreach ($pricesFromResponse as $priceFromResponse) {
-            $parts = explode(' ', $priceFromResponse);
-
-            if (count($parts) == 3) {
-                $responsePriceSum += floatval($parts[1]);
-            }
-
-            if (count($parts) == 2) {
-                $responsePriceSum += floatval($parts[0]);
-            }
-        }
-
-        return $this->calculateMean($responsePriceSum * 100, $pricesCount);
+        return $pricesFromResponse;
     }
 }
