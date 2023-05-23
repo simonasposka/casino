@@ -12,11 +12,12 @@ class ItemsController extends Controller
 {
     public function index(): View
     {
-        $items = Item::all();
+        $user = auth()->user();
+        $items = $user->items()->get();
 
         return view('ItemsIndex', [
-           'items' => $items
-        ]);
+        'items' => $items
+    ]);
     }
 
     public function create(): View
