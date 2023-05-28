@@ -5,11 +5,13 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BetItemsController;
 use App\Http\Controllers\BetsController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\WalletController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ItemsController;
+use App\Http\Controllers\StoreController;
 use App\Http\Controllers\ListingsController;
 use App\Http\Middleware\AdminOnly;
 use App\Http\Middleware\RedirectIfAuthenticated;
@@ -59,6 +61,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], static function(
     Route::get('items/{item}/edit', [ItemsController::class, 'edit']);
     Route::get('items/{item}/delete', [ItemsController::class, 'delete']);
     Route::delete('items/{item}', [ItemsController::class, 'destroy']);
+    Route::get('items/{item}/sell', [ItemsController::class, 'sell']);
 
     Route::group(['middleware' => [AdminOnly::class]], static function () {
         Route::get('/events', [EventsController::class, 'index'])->name('events.index');
@@ -75,6 +78,16 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], static function(
         Route::get('categories/{category}/delete', [CategoriesController::class, 'delete']);
         Route::delete('categories/{category}', [CategoriesController::class, 'destroy']);
     });
+
+    //Wallet
+    Route::get('wallet', [WalletController::class, 'show']);
+
+    //Store
+    Route::get('store', [StoreController::class, 'index'])->name('store.index');
+    Route::get('store/{item}', [StoreController::class, 'show'])->name('store.show');
+    Route::get('store/{item}/buy', [StoreController::class, 'buy']);
+
+
 
     Route::get('/listings/{listing}', [ListingsController::class, 'show'])->name('listings.show');
 });
