@@ -24,7 +24,7 @@ class BetItemsController extends Controller
             'listingId' => $listingId,
             'betId' => $betId
         ]);
-        dd('Debug message BetItemsController create');
+        //dd('Debug message BetItemsController create');
     }
 
     public function createJoin(int $listingId, Bet $bet): View
@@ -46,7 +46,7 @@ class BetItemsController extends Controller
     public function store(int $listingId, int $betId, Request $request): RedirectResponse
     {
         $itemId = intval($request->get('item_id'));
-        dd('Debug message BetItemsController store');
+        //dd('Debug message BetItemsController store');
         /* @var Item $item */
         $item = Item::find($itemId);
         $item->bet_id = $betId;
@@ -62,17 +62,7 @@ class BetItemsController extends Controller
     /* @var Item|null $item */
     $item = Item::find($itemId);
 
-    if (!$item) {
-        return redirect(route('listings.show', $listingId))->with('error', 'Item not found');
-    }
-
-    //$bet = $item->bet;
-
-    if (!$bet) {
-        return redirect(route('listings.show', $listingId))->with('error', 'Bet not found');
-    }
-
-    $bet->participant_id = auth()->id();
+    $bet->participant_id = auth()->id();//bruh jis perraso useri.
     $bet->save();
 
     $item->bet_id = $bet->id;

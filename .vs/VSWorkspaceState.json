@@ -8,9 +8,9 @@
     "\\public",
     "\\resources",
     "\\resources\\views",
-    "\\resources\\views\\home",
+    "\\resources\\views\\layouts",
     "\\routes"
   ],
-  "SelectedNode": "\\resources\\views\\layouts",
+  "SelectedNode": "\\app\\Models\\Bet.php",
   "PreviewInSolutionExplorer": false
 }
