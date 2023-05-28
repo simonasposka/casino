@@ -10,6 +10,7 @@ use App\Http\Controllers\TeamsController;
 use App\Http\Controllers\TeamUserArticlesController;
 use App\Http\Controllers\TeamUsersController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\WalletController;
 use Illuminate\Support\Facades\Route;
 
 /*
