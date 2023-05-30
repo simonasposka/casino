@@ -13,7 +13,7 @@ class EventsController extends Controller
 {
     public function index(SportsApi $api): View
     {
-        $events = [];// $api->getEvents();
+        $events = $api->getEvents();
 
         foreach ($events as $event) {
             $foundEvent = Event::where('uuid', '=', $event['uuid'])->first();

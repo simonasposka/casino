@@ -51,6 +51,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], static function(
     Route::post('/listings/{listing}/bets', [BetsController::class, 'store']);
     Route::get('/listings/{listing}/bets/{bet}/items/add', [BetItemsController::class, 'create']);
     Route::post('/listings/{listing}/bets/{bet}/items', [BetItemsController::class, 'store']);
+    Route::get('/listings/{listing}/bets/{bet}/items/addJoin', [BetItemsController::class, 'createJoin']);
+    Route::post('/listings/{listing}/bets/{bet}/items/join', [BetItemsController::class, 'storeJoin']);
 
     // Items
     Route::get('items', [ItemsController::class, 'index'])->name('items.index');
@@ -64,8 +66,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], static function(
     Route::get('items/{item}/sell', [ItemsController::class, 'sell']);
 
     Route::group(['middleware' => [AdminOnly::class]], static function () {
+        // Events
         Route::get('/events', [EventsController::class, 'index'])->name('events.index');
 
+        // Listings
         Route::get('/listings/create', [ListingsController::class, 'create'])->name('listings.create');
         Route::post('/listings', [ListingsController::class, 'store']);
 

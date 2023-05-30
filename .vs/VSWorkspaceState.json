@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\app",
+    "\\app\\Http",
+    "\\app\\Http\\Controllers",
+    "\\app\\Models",
+    "\\public",
+    "\\resources",
+    "\\resources\\views",
+    "\\resources\\views\\layouts",
+    "\\routes"
+  ],
+  "SelectedNode": "\\app\\Models\\Bet.php",
+  "PreviewInSolutionExplorer": false
+}

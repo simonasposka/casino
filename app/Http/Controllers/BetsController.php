@@ -23,4 +23,5 @@ class BetsController extends Controller
 
         return redirect()->back()->with('message', 'Bet created');
     }
+    
 }

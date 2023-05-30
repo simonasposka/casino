@@ -20,8 +20,8 @@ class ItemsController extends Controller
         $items = $user->items;
 
         return view('ItemsIndex', [
-           'items' => $items
-        ]);
+        'items' => $items
+    ]);
     }
 
     public function create(): View
