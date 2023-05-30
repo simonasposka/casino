@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Store extends Model
 {
+    protected $table = 'store';
     use HasFactory;
 
     public $timestamps = false;
