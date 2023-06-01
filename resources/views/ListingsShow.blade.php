@@ -87,8 +87,10 @@
                                     <button type="submit" class="mt-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium text-sm px-5 py-2 mr-2 mb-2">Add item</button>
                                 </a>
                             @else
+                            <a href="/dashboard/listings/{{ $listing['id'] }}/bets/{{ $bet['id'] }}/items/addJoin">
                                 <button type="submit" class="mt-2 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium text-sm px-5 py-2 mr-2 mb-2">Join Bet</button>
-                            @endif
+                                </a>
+                                @endif
                         </td>
                     </tr>
                 </tbody>

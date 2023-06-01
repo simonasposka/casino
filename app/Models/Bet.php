@@ -32,8 +32,8 @@ class Bet extends Model
         return $this->hasMany(Item::class);
     }
 
-    public function listing(): BelongsTo
+    public function listing()
     {
-        return $this->belongsTo(ListingStatus::class);
+        return $this->belongsTo(Listing::class, 'listing_id');
     }
 }
