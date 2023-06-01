@@ -19,12 +19,13 @@ class BetItemsController extends Controller
         $items = $items->filter(function (Item $item) {
             return is_null($item->bet_id);
         });
-
+        
         return view('AddItemToBet', [
             'items' => $items,
             'listingId' => $listingId,
             'betId' => $betId
         ]);
+        //dd('Debug message BetItemsController create');
     }
 
     public function createJoin(int $listingId, Bet $bet): View
@@ -42,10 +43,11 @@ class BetItemsController extends Controller
     ]);
     }
 
+
     public function store(int $listingId, int $betId, Request $request): RedirectResponse
     {
         $itemId = intval($request->get('item_id'));
-
+        //dd('Debug message BetItemsController store');
         /* @var Item $item */
         $item = Item::find($itemId);
         $item->bet_id = $betId;

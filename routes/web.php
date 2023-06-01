@@ -71,8 +71,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], static function(
     Route::get('items/{item}/sell', [ItemsController::class, 'sell']);
 
     Route::group(['middleware' => [AdminOnly::class]], static function () {
+        // Events
         Route::get('/events', [EventsController::class, 'index'])->name('events.index');
 
+        // Listings
         Route::get('/listings/create', [ListingsController::class, 'create'])->name('listings.create');
         Route::post('/listings', [ListingsController::class, 'store']);
 
