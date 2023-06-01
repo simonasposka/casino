@@ -49,10 +49,15 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], static function(
 
     // Bets
     Route::post('/listings/{listing}/bets', [BetsController::class, 'store']);
+    Route::get('/bets', [BetsController::class, 'userBets'])->name('bets.index');
     Route::get('/listings/{listing}/bets/{bet}/items/add', [BetItemsController::class, 'create']);
     Route::post('/listings/{listing}/bets/{bet}/items', [BetItemsController::class, 'store']);
     Route::get('/listings/{listing}/bets/{bet}/items/addJoin', [BetItemsController::class, 'createJoin']);
     Route::post('/listings/{listing}/bets/{bet}/items/join', [BetItemsController::class, 'storeJoin']);
+    Route::delete('bets/{bet}', [BetsController::class, 'destroy']);
+    Route::get('bets/{bet}/delete', [BetsController::class, 'delete']);
+    Route::get('bets/{bet}/edit', [BetsController::class, 'edit'])->name('BetsEdit');
+    Route::put('bets/{bet}', [BetsController::class, 'update']);
 
     // Items
     Route::get('items', [ItemsController::class, 'index'])->name('items.index');
